@@ -1,6 +1,5 @@
 # Lunar Reserve · Proof‑of‑Collateral Token Launch Framework
 
-[![Build & Tests](https://github.com/Tiamat-Digital/proof-of-collateral/actions/workflows/test.yml/badge.svg)](../../actions)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 > **“From the chaos of Tiamat, the world was born. From the crash of LUNC, new strength arises.”**  
