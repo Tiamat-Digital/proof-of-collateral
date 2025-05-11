@@ -1,4 +1,4 @@
-# Lunar Reserve · Proof‑of‑Collateral Token Launch Framework
+# Proof‑of‑Collateral Token Launch Framework
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
