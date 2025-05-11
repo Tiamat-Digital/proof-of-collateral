@@ -1,0 +1,150 @@
+# Lunar Reserve: A Proof‑of‑Collateral Token Launch Framework
+
+*Version 0.1 — May 11, 2025*
+
+---
+
+## Abstract
+
+The **Proof of Collateral** framework introduces a fully collateral‑backed token issuance model designed to eradicate common vulnerabilities that enable scammers, rug pulls, and catastrophic de‑pegs—problems painfully illustrated by platforms such as *pump.fun* and the historic 2022–2023 *Terra Classic (LUNC)* collapse. By enforcing on‑chain Proof‑of‑Collateral at mint‑time, immutable redemption guarantees, and transparent reserve audits, Lunar Reserve empowers communities to launch innovation‑friendly tokens to prevent rug pulls.
+
+---
+
+## Table of Contents
+
+1. [Motivation](#motivation)
+
+2. [Background](#background)
+
+   1. Pump.fun Mechanics
+   2. The LUNC / UST Fiasco
+
+3. [Design Goals](#design-goals)
+
+4. [System Architecture](#system-architecture)
+
+   1. Collateral Vault
+   2. Mint & Redemption Logic
+
+5. [Economic Model](#economic-model)
+
+   1. 100 %+ Collateralization
+   2. Premium Allocation (Dev 5 %, 10% Mint-Burn Reserve 85 %)
+   3. Supply & Price Dynamics
+
+6. [Security Analysis](#security-analysis)
+
+   1. Rug‑Pull Immunity
+   2. Stress‑Test Scenarios
+
+7. [Comparative Analysis](#comparative-analysis)
+
+   1. Lunar Reserve vs Pump.fun
+   2. Lunar Reserve vs Algorithmic Stablecoins (LUNC/UST)
+
+8. [Implementation Roadmap](#implementation-roadmap)
+
+9. [Open‑Source Reference Implementation](#reference-implementation)
+
+10. [Use‑Case Showcase](#use-case-showcase)
+
+11. [Conclusion](#conclusion)
+
+12. [Appendices](#appendices)
+
+---
+
+## 1  Motivation&#x20;
+
+Retail investors lost billions to **rug pulls** and **algorithmic de‑pegs** between 2021‑2024. Two emblematic failures:
+
+* *pump.fun*—a frictionless meme‑coin factory whose lack of hard liquidity locks allows founders to drain or dump >99 % of project value within minutes.
+* *Terra Classic (LUNC/UST)*—an algorithmic stablecoin design that collapsed once market confidence cracked, vaporizing >\$50 B in capitalization.
+
+**Proof of Collateral** was conceived to provide a way to prevent rug pulls. If you ever lost money to a crypto project scammer, then you may be interested in proof of collateral. 
+
+## 2  Background&#x20;
+
+### 2.1  Pump.fun Mechanics
+
+Pump.fun enables instant SPL‑token creation on Solana. Liquidity is seeded into a bonding curve contract; creators can withdraw the remaining curve balance at Tier *X*. Nothing prevents them from extracting or dumping after hype.
+
+### 2.2  The LUNC / UST Fiasco
+
+UST maintained a \$1 peg algorithmically by minting/burning LUNC. When confidence faltered in May 2022, the reflexive mint loop hyper‑inflated LUNC (>6 T supply), destroying its value and undermining the peg.
+
+## 3  Design Goals&#x20;
+
+1. **Hard Collateral**: Every token must be at least 100 % collateralized *at all times*.
+2. **Transparency**: Proof‑of‑Collateral verifiable by anyone on‑chain.
+3. **Immutable Redemption**: Holders can always redeem collateral 1:1 (minus small burn fee) even if founders vanish.
+4. **Sustainable Funding**: Development funded through capped premium (< 5 %) without touching underlying reserves.
+5. **Composable & Chain‑Agnostic**: Deployable on any EVM‑compatible, CosmWasm, or Solana chain.
+
+## 4  System Architecture&#x20;
+
+### 4.1  Collateral Vault
+
+* Smart contract that **escrows stable collateral** (e.g., USDC, DAI, LUNC‑staked derivatives).
+
+### 4.2  Mint & Redemption Logic
+
+* **Minting**: Users deposit collateral C + *Premium* P. They receive C worth of tokens; P is routed to the Dev Fund and part of that is burnt at mint, increasing reserves.
+* **Redemption**: Users burn tokens to receive proportional collateral from the vault at a value of reserves / supply. A 0.1 % **deflationary burn fee** discourages spam and further reduces supply, increasing value of all tokens.
+
+## 5  Economic Model&#x20;
+
+### 5.1  100 %+ Collateralization
+
+Supply cannot exceed vault collateral as collateral is required to mint and kept in vault.
+
+### 5.2  Premium Allocation
+
+| Flow             | Share    |
+| ---------------- | -------- |
+| Collateral Vault | **95 %** |
+| Dev Fund         | **5 %**  |
+|                  |          |
+
+### 5.3  Supply & Price Dynamics
+
+The token’s book value is floor‑pegged by the vault’s collateral per token. Speculative price can rise above book but cannot fall below unless holders willingly burn for collateral. If price rises above minting and redemption value, then users can mint new tokens from the contract, and sell into the market premium. If price falls below minting and redemption value, then users can buy from the market and redeem from the contract. 
+
+## 6  Security Analysis&#x20;
+
+* **Rug‑Pull Immunity**: Founders possess *zero* withdrawal rights from collateral vault. The only way to withdraw from the vault is by sending the tokens/notes to it.
+
+## 7  Comparative Analysis&#x20;
+
+| Feature              | Pump.fun           | LUNC/UST          | **Lunar Reserve**                   |
+| -------------------- | ------------------ | ----------------- | ----------------------------------- |
+| Collateralization    | none               | algorithmic (0 %) | 100 %+ hard collateral              |
+| Liquidity Locks      | optional (rare)    | N/A               | Every token is collateralized       |
+| Founder Withdrawal   | unrestricted       | N/A               | impossible                          |
+| Redemption Guarantee | none               | peg failed        | % collateral claim supply / reserve |
+| Dev Funding          | curve skim (\~2 %) | seniorage         | transparent 5 % premium             |
+| Auditability         | low                | low               |                                     |
+
+## 8  Implementation Roadmap&#x20;
+
+1. **Q2 2025** — Solidity, ETH, and CosmWasm reference contracts, internal testnet.
+2. **Q3 2025** — Third‑party audit.
+3. **Q4 2025** — Public beta on Terra Classic
+
+## 9  Open‑Source Reference Implementation&#x20;
+
+GitHub: [https://github.com/tiamat-digital](https://github.com/tiamat-digital) (MIT).
+
+## 10  Use‑Case Showcase&#x20;
+
+* **Community Meme‑Coins** with real backing.
+* **Event Tickets** refundable for face‑value collateral.
+
+## 11  Conclusion&#x20;
+
+Lunar Reserve merges the viral energy of permissionless token launches with uncompromising financial guarantees. By enforcing irrevocable Proof‑of‑Collateral, the protocol disincentivizes bad actors, fosters long‑term community trust, and ensures that a Terra‑style meltdown can *never* recur.
+
+---
+
+© 2025 Tiamat Digital — All rights reserved.
+
